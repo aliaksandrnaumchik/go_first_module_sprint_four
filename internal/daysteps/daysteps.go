@@ -28,7 +28,7 @@ func parsePackage(data string) (int, time.Duration, error) {
 	// 3. Парсим количество шагов
 	steps, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return 0, 0, fmt.Errorf("ошибка при преобразовании количества шагов: " + err.Error())
+		return 0, 0, fmt.Errorf("ошибка при преобразовании количества шагов")
 	}
 
 	// 4. Проверяем, что количество шагов больше нуля
@@ -39,7 +39,7 @@ func parsePackage(data string) (int, time.Duration, error) {
 	// 5. Парсим длительность прогулки
 	duration, err := time.ParseDuration(parts[1])
 	if err != nil {
-		return 0, 0, fmt.Errorf("ошибка при парсинге длительности: " + err.Error())
+		return 0, 0, fmt.Errorf("ошибка при парсинге длительности")
 	}
 
 	// 6. Возвращаем результаты при успешном выполнении
