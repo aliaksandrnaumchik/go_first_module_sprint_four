@@ -130,7 +130,7 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 			"Длительность: %.2f ч.\n"+
 			"Дистанция: %.2f км.\n"+
 			"Скорость: %.2f км/ч\n"+
-			"Сожгли калорий: %.2f",
+			"Сожгли калорий: %.2f\n",
 		activity,
 		duration.Hours(),
 		trainingDistance,
