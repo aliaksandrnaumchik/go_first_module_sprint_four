@@ -31,6 +31,10 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	if err != nil {
 		return 0, "", 0, fmt.Errorf("ошибка при парсинге количества шагов: %w", err)
 	}
+	// Добавляем проверку на положительные шаги
+	if steps <= 0 {
+		return 0, "", 0, fmt.Errorf("количество шагов должно быть положительным")
+	}
 
 	// 4. Получаем вид активности
 	activity := strings.TrimSpace(parts[1])
@@ -40,6 +44,10 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	duration, err := time.ParseDuration(durationStr)
 	if err != nil {
 		return 0, "", 0, fmt.Errorf("ошибка при парсинге длительности: %w", err)
+	}
+	// Добавляем проверку на положительную длительность
+	if duration <= 0 {
+		return 0, "", 0, fmt.Errorf("продолжительность должна быть положительной")
 	}
 
 	// 6. Возвращаем успешные значения
