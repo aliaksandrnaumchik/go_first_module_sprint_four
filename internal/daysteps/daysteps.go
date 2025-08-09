@@ -17,12 +17,27 @@ const (
 )
 
 func parsePackage(data string) (int, time.Duration, error) {
+	// Проверяем, что входная строка не пустая
+	if data == "" {
+		return 0, 0, fmt.Errorf("входная строка пуста")
+	}
+
 	// 1. Разделяем входную строку по запятой
 	parts := strings.Split(data, ",")
 
 	// 2. Проверяем, что получили ровно 2 части
 	if len(parts) != 2 {
 		return 0, 0, fmt.Errorf("неверный формат данных: ожидается 2 части, разделённые запятой")
+	}
+
+	// Удаляем пробелы в начале и конце каждой части
+	for i := range parts {
+		parts[i] = strings.TrimSpace(parts[i])
+	}
+
+	// Проверяем, что части не пустые после обрезки
+	if parts[0] == "" || parts[1] == "" {
+		return 0, 0, fmt.Errorf("пустые значения в данных")
 	}
 
 	// 3. Парсим количество шагов
@@ -40,6 +55,11 @@ func parsePackage(data string) (int, time.Duration, error) {
 	duration, err := time.ParseDuration(parts[1])
 	if err != nil {
 		return 0, 0, fmt.Errorf("ошибка при парсинге длительности")
+	}
+
+	// Проверяем, что длительность положительная
+	if duration <= 0 {
+		return 0, 0, fmt.Errorf("продолжительность должна быть положительной")
 	}
 
 	// 6. Возвращаем результаты при успешном выполнении
@@ -68,7 +88,7 @@ func DayActionInfo(data string, weight, height float64) string {
 	// 5. Вычисляем потраченные калории
 	calories, err := spentcalories.WalkingSpentCalories(steps, weight, height, duration)
 	if err != nil {
-		fmt.Println("Ошибка при рассчёте каллорий:", err)
+		fmt.Println("Ошибка при расчёте калорий:", err)
 		return ""
 	}
 
@@ -76,7 +96,7 @@ func DayActionInfo(data string, weight, height float64) string {
 	result := fmt.Sprintf(
 		"Количество шагов: %d.\n"+
 			"Дистанция составила %.2f км.\n"+
-			"Вы сожгли %.2f ккал.",
+			"Вы сожгли %.2f ккал.\n",
 		steps,
 		distanceKm,
 		calories,
