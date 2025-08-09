@@ -2,6 +2,7 @@ package daysteps
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -17,11 +18,6 @@ const (
 )
 
 func parsePackage(data string) (int, time.Duration, error) {
-	// Проверяем, что входная строка не пустая
-	if data == "" {
-		return 0, 0, fmt.Errorf("входная строка пуста")
-	}
-
 	// 1. Разделяем входную строку по запятой
 	parts := strings.Split(data, ",")
 
@@ -30,14 +26,16 @@ func parsePackage(data string) (int, time.Duration, error) {
 		return 0, 0, fmt.Errorf("неверный формат данных: ожидается 2 части, разделённые запятой")
 	}
 
-	// Удаляем пробелы в начале и конце каждой части
-	for i := range parts {
-		parts[i] = strings.TrimSpace(parts[i])
-	}
-
 	// Проверяем, что части не пустые после обрезки
 	if parts[0] == "" || parts[1] == "" {
 		return 0, 0, fmt.Errorf("пустые значения в данных")
+	}
+
+	// Проверяем наличие пробелов в начале и конце каждой части
+	for i, part := range parts {
+		if strings.TrimSpace(part) != part {
+			return 0, 0, fmt.Errorf("обнаружены пробелы в части %d", i+1)
+		}
 	}
 
 	// 3. Парсим количество шагов
@@ -70,7 +68,7 @@ func DayActionInfo(data string, weight, height float64) string {
 	// 1. Парсим входные данные
 	steps, duration, err := parsePackage(data)
 	if err != nil {
-		fmt.Println("Ошибка при парсинге данных:", err)
+		log.Println("Ошибка при парсинге данных:", err)
 		return ""
 	}
 

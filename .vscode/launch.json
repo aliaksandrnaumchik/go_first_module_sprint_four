@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Tests",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceFolder}/internal/daysteps",
+            "args": ["-test.v=true"],
+             "console": "integratedTerminal"
+        }
+    ]
+}
